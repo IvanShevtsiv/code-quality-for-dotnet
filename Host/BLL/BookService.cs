@@ -13,47 +13,48 @@ namespace Host.BLL
             _bookRepository = bookRepository;
         }
 
-        public async Task<Book> Get(Guid id)
+        public Task<Book> GetByIdAsync(Guid bookId)
         {
-            var book  = _bookRepository.Get(id);
+            var book  = _bookRepository.Get(bookId);
 
             if (book == null)
             {
-                throw new Exception($"Book with Id {id} could not be found");
+                throw new Exception($"Book with Id {bookId} could not be found");
             }
-
-            await Task.CompletedTask;
-            return book;
-
+            
+            return Task.FromResult(book);
         }
 
-        public async Task<IEnumerable<Book>> Get()
+        public Task<IEnumerable<Book>> GetAllAsync()
         {
-            var books = _bookRepository.Get();
-            return books;
+            return Task.FromResult(_bookRepository.GetAll());
         }
 
-        public async Task CreateAsync(Book book)
+        public Task CreateAsync(Book book)
         {
             book.Id = Guid.NewGuid();
-            _bookRepository.CreateAsync(book);
+            _bookRepository.Create(book);
+            
+            return  Task.CompletedTask;
         }
 
-        public void UpdateAsync(Book book)
+        public void Update(Book book)
         {
-            _bookRepository.UpdateAsync(book);
+            _bookRepository.Update(book);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public Task DeleteAsync(Guid bookId)
         {
-            var book = _bookRepository.Get(id);
+            var book = _bookRepository.Get(bookId);
 
             if (book == null)
             {
-                throw new Exception($"Book with Id {id} could not be found");
+                throw new Exception($"Book with Id {bookId} could not be found");
             }
-
-            _bookRepository.DeleteAsync(book);
+            
+            _bookRepository.Delete(book);
+            
+            return  Task.CompletedTask;
         }
     }
 }

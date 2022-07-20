@@ -18,22 +18,21 @@ namespace Host.WebApi.Controllers
         [HttpGet("")]
         public async Task<List<Book>> Get()
         {
-            var x = await _bookService.Get();
+            var x = await _bookService.GetAllAsync();
             return x.ToList();
         }
 
         [HttpGet("{bookId:int:min(1)}")]
         public async Task<Book> GetByIdAsync([FromHeader]Guid id, int bookId)
         {
-            var book = await _bookService.Get(id);
+            var book = await _bookService.GetByIdAsync(id);
 
             return book;
         }
 
         [HttpPost("")]
-        public async Task<IActionResult> CreateAsync([FromBody] Book book)
+        public async Task<IActionResult> CreateAsync([FromBody] Book? book)
         {
-
             await _bookService.CreateAsync(book);
 
             return Ok();
@@ -42,8 +41,7 @@ namespace Host.WebApi.Controllers
         [HttpPut("")]
         public IActionResult PutAsync([FromBody] Book book)
         {
-
-            _bookService.UpdateAsync(book);
+            _bookService.Update(book);
 
             return Ok();
         }
@@ -51,7 +49,6 @@ namespace Host.WebApi.Controllers
         [HttpDelete("del")]
         public IActionResult Drop([FromHeader] Guid bookIdGuid)
         {
-
             _bookService.DeleteAsync(bookIdGuid);
 
             return Ok();

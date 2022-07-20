@@ -16,7 +16,7 @@ namespace Host.WebApi.Controllers
         }
 
         [HttpGet("")]
-        public async Task<List<Book?>> Get()
+        public async Task<List<Book>> Get()
         {
             var x = await _bookService.GetAllAsync();
             return x.ToList();

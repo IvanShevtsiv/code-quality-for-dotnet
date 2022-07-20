@@ -25,12 +25,12 @@ namespace Host.BLL
             return Task.FromResult(book);
         }
 
-        public Task<IEnumerable<Book?>> GetAllAsync()
+        public Task<IEnumerable<Book>> GetAllAsync()
         {
             return Task.FromResult(_bookRepository.GetAll());
         }
 
-        public Task CreateAsync(Book? book)
+        public Task CreateAsync(Book book)
         {
             book.Id = Guid.NewGuid();
             _bookRepository.Create(book);

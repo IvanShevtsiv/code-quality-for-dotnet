@@ -10,12 +10,12 @@ namespace Host.DAL
             return DataBase.Books.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Book?> GetAll()
+        public IEnumerable<Book> GetAll()
         {
             return DataBase.Books;
         }
 
-        public void Create(Book? book)
+        public void Create(Book book)
         {
             DataBase.Books.Add(book);
         }
@@ -32,7 +32,7 @@ namespace Host.DAL
             // TODO! Add mechanism for update.
         }
 
-        public void Delete(Book? book)
+        public void Delete(Book book)
         {
             DataBase.Books.Remove(book);
         }
@@ -58,7 +58,7 @@ namespace Host.DAL
             FullName = "Ivan Franko"
         };
 
-        public static List<Book?> Books => new List<Book?>
+        public static List<Book> Books => new List<Book?>
         {
             new Book
             {

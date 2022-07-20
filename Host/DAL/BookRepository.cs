@@ -5,41 +5,36 @@ namespace Host.DAL
 {
     public class BookRepository : IBookRepository
     {
-        public Book Get(Guid id)
+        public Book? Get(Guid id)
         {
-            var book = DataBase.books.Where(x => x.Id == id).FirstOrDefault();
-
-            return book;
+            return DataBase.Books.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Book> Get()
+        public IEnumerable<Book?> GetAll()
         {
-            var books = DataBase.books;
-
-            return books;
+            return DataBase.Books;
         }
 
-        public void CreateAsync(Book book)
+        public void Create(Book? book)
         {
-            DataBase.books.Add(book);
+            DataBase.Books.Add(book);
         }
 
-        public void UpdateAsync(Book book)
+        public void Update(Book book)
         {
-            var bookInDB = Get(book.Id);
+            var bookInDb = Get(book.Id);
 
-            if (bookInDB == null)
+            if (bookInDb == null)
             {
                 throw new Exception($"Can not update the book.");
             }
 
             // TODO! Add mechanism for update.
-
         }
 
-        public void DeleteAsync(Book book)
+        public void Delete(Book? book)
         {
-            DataBase.books.Remove(book);
+            DataBase.Books.Remove(book);
         }
     }
 
@@ -47,26 +42,23 @@ namespace Host.DAL
     {
         static Author author1 = new Author
         {
-            id = 1,
+            Id = Guid.NewGuid(),
             FullName = "Taras Shevchenko"
-
         };
 
         static Author author2 = new Author
         {
-            id = 2,
+            Id = Guid.NewGuid(),
             FullName = "Lesya Ukrainka"
-
         };
 
         static Author author3 = new Author
         {
-            id = 3,
+            Id = Guid.NewGuid(),
             FullName = "Ivan Franko"
-
         };
 
-        public static List<Book> books = new List<Book>
+        public static List<Book?> Books => new List<Book?>
         {
             new Book
             {

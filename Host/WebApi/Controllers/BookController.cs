@@ -18,14 +18,19 @@ namespace Host.WebApi.Controllers
         [HttpGet("")]
         public async Task<List<Book>> Get()
         {
-            var x = await _bookService.Get();
-            return x.ToList();
+            var result = await _bookService.GetAllBooksAsync();
+            return result.ToList();
         }
 
         [HttpGet("{bookId:int:min(1)}")]
         public async Task<Book> GetByIdAsync([FromHeader]Guid id, int bookId)
         {
-            var book = await _bookService.Get(id);
+            if (!_bookService.BookExists(id))
+            {
+                return Book.NotFound;
+            }
+
+            var book = await _bookService.GetBookAsync(id);
 
             return book;
         }
@@ -34,7 +39,7 @@ namespace Host.WebApi.Controllers
         public async Task<IActionResult> CreateAsync([FromBody] Book book)
         {
 
-            await _bookService.CreateAsync(book);
+            await _bookService.AddNewBookAsync(book);
 
             return Ok();
         }
@@ -43,7 +48,7 @@ namespace Host.WebApi.Controllers
         public IActionResult PutAsync([FromBody] Book book)
         {
 
-            _bookService.UpdateAsync(book);
+            _bookService.UpdateBookAsync(book);
 
             return Ok();
         }
@@ -51,8 +56,12 @@ namespace Host.WebApi.Controllers
         [HttpDelete("del")]
         public IActionResult Drop([FromHeader] Guid bookIdGuid)
         {
+            if (!_bookService.BookExists(bookIdGuid))
+            {
+                return BadRequest($"There is no book with id {bookIdGuid}");
+            }
 
-            _bookService.DeleteAsync(bookIdGuid);
+            _bookService.DeleteBookAsync(bookIdGuid);
 
             return Ok();
         }

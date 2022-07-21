@@ -2,9 +2,14 @@
 {
     public class Author
     {
-        public int? id { get; set; }
+        public int Id { get; set; }
+
         public string FullName { get; set; }
-        
-        //public List<Book> Books { get; set; }
+
+        public Author(int id, string fullName) 
+        { 
+            Id = id; 
+            FullName = fullName;
+        }
     }
 }

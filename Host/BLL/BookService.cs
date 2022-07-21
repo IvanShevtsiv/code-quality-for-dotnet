@@ -13,47 +13,47 @@ namespace Host.BLL
             _bookRepository = bookRepository;
         }
 
-        public async Task<Book> Get(Guid id)
+        public Book GetById(Guid id)
         {
-            var book  = _bookRepository.Get(id);
+            var book  = _bookRepository.GetById(id);
 
             if (book == null)
             {
                 throw new Exception($"Book with Id {id} could not be found");
             }
 
-            await Task.CompletedTask;
             return book;
-
         }
 
-        public async Task<IEnumerable<Book>> Get()
+        public IEnumerable<Book> GetAll()
         {
-            var books = _bookRepository.Get();
+            var books = _bookRepository.GetAll();
             return books;
         }
 
-        public async Task CreateAsync(Book book)
+        public Book Create(Book book)
         {
             book.Id = Guid.NewGuid();
-            _bookRepository.CreateAsync(book);
+            var newBook = _bookRepository.Create(book);
+            
+            return newBook;
         }
 
-        public void UpdateAsync(Book book)
+        public void Update(Book book)
         {
-            _bookRepository.UpdateAsync(book);
+            _bookRepository.Update(book);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public void Delete(Guid id)
         {
-            var book = _bookRepository.Get(id);
+            var book = _bookRepository.GetById(id);
 
             if (book == null)
             {
                 throw new Exception($"Book with Id {id} could not be found");
             }
 
-            _bookRepository.DeleteAsync(book);
+            _bookRepository.Delete(book);
         }
     }
 }

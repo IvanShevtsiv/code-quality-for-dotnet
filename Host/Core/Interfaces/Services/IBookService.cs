@@ -4,10 +4,14 @@ namespace Host.Core.Interfaces.Services
 {
     public interface IBookService
     {
-        Task<Book> Get(Guid id);
-        Task<IEnumerable<Book>> Get();
-        Task CreateAsync(Book book);
-        void UpdateAsync(Book book);
-        Task DeleteAsync(Guid id);
+        Book? GetById(Guid id);
+
+        IEnumerable<Book> GetAll();
+
+        Book Create(Book book);
+
+        void Update(Book book);
+
+        void Delete(Guid id);
     }
 }

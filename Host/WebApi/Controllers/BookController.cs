@@ -10,25 +10,21 @@ namespace Host.WebApi.Controllers
     {
         private readonly IBookService _bookService;
 
-        public BookController(IBookService bs)
+        public BookController(IBookService bookService)
         {
-            _bookService = bs;
+            _bookService = bookService;
         }
 
         [HttpGet("")]
-        public async Task<List<Book>> Get()
+        public async Task<IEnumerable<Book>> Get() 
         {
-            var x = await _bookService.Get();
-            
-            return x.ToList();
+            return await _bookService.GetAsync();
         }
 
         [HttpGet("{bookId:int:min(1)}")]
-        public async Task<Book> GetByIdAsync([FromHeader]Guid id, int bookId)
+        public async Task<Book> GetByIdAsync([FromHeader] Guid id)
         {
-            var book = await _bookService.Get(id);
-
-            return book;
+            return await _bookService.GetAsync(id);
         }
 
         [HttpPost("")]
@@ -40,9 +36,9 @@ namespace Host.WebApi.Controllers
         }
 
         [HttpPut("")]
-        public IActionResult PutAsync([FromBody] Book book)
+        public async Task<IActionResult> PutAsync([FromBody] Book book)
         {
-            _bookService.UpdateAsync(book);
+            await _bookService.UpdateAsync(book);
 
             return Ok();
         }

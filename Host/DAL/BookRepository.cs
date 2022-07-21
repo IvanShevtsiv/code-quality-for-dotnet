@@ -5,26 +5,32 @@ namespace Host.DAL
 {
     public class BookRepository : IBookRepository
     {
-        public Book Get(Guid id)
+        public async Task<Book> GetAsync(Guid id)
         {
+            await Task.CompletedTask;
+
             return DataBase.books
                    .Where(x => x.Id == id)
                    .FirstOrDefault();
         }
 
-        public IEnumerable<Book> Get()
+        public async Task<IEnumerable<Book>> GetAsync()
         {
+            await Task.CompletedTask;
+
             return DataBase.books;
         }
 
-        public void CreateAsync(Book book)
+        public async Task CreateAsync(Book book)
         {
+            await Task.CompletedTask;
+
             DataBase.books.Add(book);
         }
 
-        public void UpdateAsync(Book book)
+        public async Task UpdateAsync(Book book)
         {
-            var bookInDB = Get(book.Id);
+            var bookInDB = await GetAsync(book.Id);
 
             if (bookInDB == null)
             {
@@ -32,8 +38,10 @@ namespace Host.DAL
             }
         }
 
-        public void DeleteAsync(Book book)
+        public async Task DeleteAsync(Book book)
         {
+            await Task.CompletedTask;
+            
             DataBase.books.Remove(book);
         }
     }

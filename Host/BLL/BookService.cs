@@ -15,16 +15,15 @@ namespace Host.BLL
 
         public async Task<Book> Get(Guid id)
         {
-            var book  = _bookRepository.Get(id);
+            var book = _bookRepository.Get(id);
 
             if (book == null)
             {
                 throw new Exception($"Book with Id {id} could not be found");
             }
 
-            await Task.CompletedTask;
+            await Task.CompletedTask; // ToDo: ?????
             return book;
-
         }
 
         public async Task<IEnumerable<Book>> Get()

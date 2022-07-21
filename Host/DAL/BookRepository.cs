@@ -7,16 +7,14 @@ namespace Host.DAL
     {
         public Book Get(Guid id)
         {
-            var book = DataBase.books.Where(x => x.Id == id).FirstOrDefault();
-
-            return book;
+            return DataBase.books
+            .Where(x => x.Id == id)
+            .FirstOrDefault();
         }
 
         public IEnumerable<Book> Get()
         {
-            var books = DataBase.books;
-
-            return books;
+            return DataBase.books;
         }
 
         public void CreateAsync(Book book)
@@ -34,7 +32,6 @@ namespace Host.DAL
             }
 
             // TODO! Add mechanism for update.
-
         }
 
         public void DeleteAsync(Book book)
@@ -49,21 +46,18 @@ namespace Host.DAL
         {
             id = 1,
             FullName = "Taras Shevchenko"
-
         };
 
         static Author author2 = new Author
         {
             id = 2,
             FullName = "Lesya Ukrainka"
-
         };
 
         static Author author3 = new Author
         {
             id = 3,
             FullName = "Ivan Franko"
-
         };
 
         public static List<Book> books = new List<Book>

@@ -4,14 +4,13 @@ using Host.DAL;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddApplicationRepository();
+builder.Services.AddApplicationServices();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddApplicationServices();
-builder.Services.AddApplicationRepository();
 
 var app = builder.Build();
 

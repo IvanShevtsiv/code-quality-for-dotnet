@@ -4,57 +4,50 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Host.WebApi.Controllers
 {
-    [ApiController]
-    [Route("api/books")]
-    public class BookController : Controller
+  [ApiController]
+  [Route("api/books")]
+  public class BookController : Controller
+  {
+    private readonly IBookService _bookService;
+
+    public BookController(IBookService bookService)
     {
-        private readonly IBookService _bookService;
-
-        public BookController(IBookService bs)
-        {
-            _bookService = bs;
-        }
-
-        [HttpGet("")]
-        public async Task<List<Book>> Get()
-        {
-            var x = await _bookService.Get();
-            return x.ToList();
-        }
-
-        [HttpGet("{bookId:int:min(1)}")]
-        public async Task<Book> GetByIdAsync([FromHeader]Guid id, int bookId)
-        {
-            var book = await _bookService.Get(id);
-
-            return book;
-        }
-
-        [HttpPost("")]
-        public async Task<IActionResult> CreateAsync([FromBody] Book book)
-        {
-
-            await _bookService.CreateAsync(book);
-
-            return Ok();
-        }
-
-        [HttpPut("")]
-        public IActionResult PutAsync([FromBody] Book book)
-        {
-
-            _bookService.UpdateAsync(book);
-
-            return Ok();
-        }
-
-        [HttpDelete("del")]
-        public IActionResult Drop([FromHeader] Guid bookIdGuid)
-        {
-
-            _bookService.DeleteAsync(bookIdGuid);
-
-            return Ok();
-        }
+      _bookService = bookService;
     }
+
+    [HttpGet("")]
+    public List<Book> Get()
+    {
+      var books = _bookService.Get();
+      return books.ToList();
+    }
+
+    [HttpGet("{bookId:guid}")]
+    public Book GetById([FromHeader] Guid bookId)
+    {
+      var book = _bookService.Get(bookId);
+      return book;
+    }
+
+    [HttpPost("")]
+    public IActionResult Create([FromBody] Book book)
+    {
+      _bookService.Create(book);
+      return CreatedAtAction(nameof(Get), book.Id, book);
+    }
+
+    [HttpPut("")]
+    public IActionResult Put([FromBody] Book book)
+    {
+      _bookService.Update(book);
+      return Ok(book);
+    }
+
+    [HttpDelete("")]
+    public IActionResult Delete([FromHeader] Guid bookId)
+    {
+      _bookService.Delete(bookId);
+      return NotFound(bookId);
+    }
+  }
 }

@@ -6,8 +6,8 @@ namespace Host.Core.Interfaces.Repositories
     {
         Book Get(Guid id);
         IEnumerable<Book> Get();
-        void CreateAsync(Book book);
-        void UpdateAsync(Book book);
-        void DeleteAsync(Book obj);
+        void Create(Book book);
+        void Update(Book book);
+        void DeleteById(Guid id);
     }
 }

@@ -4,10 +4,14 @@ namespace Host.Core.Interfaces.Repositories
 {
     public interface IBookRepository
     {
-        Book Get(Guid id);
-        IEnumerable<Book> Get();
-        void CreateAsync(Book book);
-        void UpdateAsync(Book book);
-        void DeleteAsync(Book obj);
+        Book? GetById(Guid id);
+
+        IEnumerable<Book> GetAll();
+
+        Book Create(Book book);
+
+        void Update(Book book);
+
+        void Delete(Book obj);
     }
 }

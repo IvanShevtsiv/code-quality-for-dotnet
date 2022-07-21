@@ -5,56 +5,55 @@ using Microsoft.AspNetCore.Mvc;
 namespace Host.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/books")]
-    public class BookController : Controller
+    [Route("api/[controller]")]
+    public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
 
-        public BookController(IBookService bs)
+        public BookController(IBookService bookService)
         {
-            _bookService = bs;
+            _bookService = bookService;
         }
 
-        [HttpGet("")]
-        public async Task<List<Book>> Get()
+        [HttpGet]
+        public IActionResult GetAllBooks()
         {
-            var x = await _bookService.Get();
-            return x.ToList();
+            var books = _bookService.GetAll();
+            return Ok(books);
         }
 
-        [HttpGet("{bookId:int:min(1)}")]
-        public async Task<Book> GetByIdAsync([FromHeader]Guid id, int bookId)
+        [HttpGet("{bookId:guid}")]
+        public IActionResult GetBookById(Guid bookId)
         {
-            var book = await _bookService.Get(id);
+            var book = _bookService.GetById(bookId);
 
-            return book;
+            return book == null
+              ? NotFound()
+              : Ok(book);
         }
 
-        [HttpPost("")]
-        public async Task<IActionResult> CreateAsync([FromBody] Book book)
+        [HttpPost]
+        public IActionResult CreateBook(Book book)
         {
+            var newBook = _bookService.Create(book);
 
-            await _bookService.CreateAsync(book);
+            return CreatedAtAction(nameof(CreateBook), newBook);
+        }
+
+        [HttpPut]
+        public IActionResult UpdateBook(Book book)
+        {
+            _bookService.Update(book);
 
             return Ok();
         }
 
-        [HttpPut("")]
-        public IActionResult PutAsync([FromBody] Book book)
+        [HttpDelete("{bookId:guid}")]
+        public IActionResult DeleteBook(Guid bookId)
         {
+            _bookService.Delete(bookId);
 
-            _bookService.UpdateAsync(book);
-
-            return Ok();
-        }
-
-        [HttpDelete("del")]
-        public IActionResult Drop([FromHeader] Guid bookIdGuid)
-        {
-
-            _bookService.DeleteAsync(bookIdGuid);
-
-            return Ok();
+            return NoContent();
         }
     }
 }

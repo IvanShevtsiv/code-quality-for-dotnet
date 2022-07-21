@@ -7,53 +7,52 @@ namespace Host.BLL
     public class BookService : IBookService
     {
         private readonly IBookRepository _bookRepository;
-
+        
         public BookService(IBookRepository bookRepository)
         {
             _bookRepository = bookRepository;
         }
 
-        public async Task<Book> Get(Guid id)
+        public async Task<Book> GetBookByIdAsync(Guid bookId)
         {
-            var book  = _bookRepository.Get(id);
+            var book  = _bookRepository.GetBookById(bookId);
 
             if (book == null)
             {
-                throw new Exception($"Book with Id {id} could not be found");
+                throw new Exception($"Book with Id {bookId} could not be found");
             }
 
             await Task.CompletedTask;
+
             return book;
-
         }
 
-        public async Task<IEnumerable<Book>> Get()
+        public IEnumerable<Book> GetBooks()
         {
-            var books = _bookRepository.Get();
-            return books;
+            return _bookRepository.GetBooks();
         }
 
-        public async Task CreateAsync(Book book)
+        public void CreateBook(Book book)
         {
             book.Id = Guid.NewGuid();
-            _bookRepository.CreateAsync(book);
+            _bookRepository.CreateBook(book);
         }
 
-        public void UpdateAsync(Book book)
+        public void UpdateBook(Book book)
         {
-            _bookRepository.UpdateAsync(book);
+            _bookRepository.UpdateBook(book);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public void DeleteBook(Guid bookId)
         {
-            var book = _bookRepository.Get(id);
+            var book = _bookRepository.GetBookById(bookId);
 
             if (book == null)
             {
-                throw new Exception($"Book with Id {id} could not be found");
+                throw new Exception($"Book with Id {bookId} could not be found");
             }
 
-            _bookRepository.DeleteAsync(book);
+            _bookRepository.DeleteBook(book);
         }
     }
 }
